@@ -1,0 +1,32 @@
+{
+  "name": "triplel-server",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://Nes-si@github.com/Nes-si/TripleL-server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Nes-si/TripleL-server/issues"
+  },
+  "homepage": "https://github.com/Nes-si/TripleL-server#readme",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.16.3",
+    "parse": "^2.1.0",
+    "parse-dashboard": "^1.2.0",
+    "parse-server": "^3.0.0",
+    "parse-server-mailgun": "^2.4.13",
+    "request": "^2.88.0",
+    "stripe": "^6.19.0"
+  },
+  "engines": {
+    "node": ">=10.0.0",
+    "npm": ">=5.0.0"
+  }
+}

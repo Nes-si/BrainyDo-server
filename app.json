@@ -1,0 +1,37 @@
+{
+  "name": "TripleL Parse Server",
+  "description": "Server for TripleL",
+  "logo": "https://avatars0.githubusercontent.com/u/1294580?v=3&s=200",
+  "keywords": [
+    "triplel",
+    "parse",
+    "server"
+  ],
+  "repository": "https://github.com/Nes-si/TripleL-server",
+  "env": {
+    "APP_ID": {
+      "description": "A unique identifier for your app.",
+      "value": "TripleLId"
+    },
+    "MASTER_KEY": {
+      "description": "A key that overrides all permissions. Keep this secret.",
+      "value": "SampleMasterKey"
+    },
+    "PARSE_MOUNT": {
+      "description": "Configure Parse API route.",
+      "value": "/parse"
+    },
+    "SERVER_URL": {
+      "description": "URL to connect to your Heroku instance (update with your app's name + PARSE_MOUNT)",
+      "value": "http://yourappname.herokuapp.com/parse"
+    },
+    "SITE_URL": {
+      "description": "URL of Chisel CMS.",
+      "value": "http://localhost:11000"
+    }
+  },
+  "image": "heroku/nodejs",
+  "addons": [
+    "mongolab"
+  ]
+}
