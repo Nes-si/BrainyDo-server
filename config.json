@@ -6,7 +6,7 @@
 
     "port": 1117,
     "URLserver": "http://localhost:1117/parse",
-    "URLdb": "mongodb://localhost:27017/parse",
+    "URLdb": "mongodb://localhost:27017/TripleL",
     "URLsite": "http://localhost:11000",
 
     "maxUploadSize": "10mb",
@@ -50,6 +50,8 @@
   },
 
   "extraConfig": {
-    "dashboardActivated": true
+    "dashboardActivated": true,
+    "userEmail": "test",
+    "userPassword": "test"
   }
 }
