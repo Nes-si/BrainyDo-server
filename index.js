@@ -56,7 +56,7 @@ app.use('/parse', API);
 if (DASHBOARD_ACTIVATED) {
   const dashboardConfig = {
     apps: [{
-      serverURL: URL_SERVER,
+      serverURL: `http://localhost:${PORT}/parse`,
       appId: APP_ID,
       masterKey: MASTER_KEY,
       appName: parseConfig.appName
@@ -65,7 +65,6 @@ if (DASHBOARD_ACTIVATED) {
     PARSE_DASHBOARD_ALLOW_INSECURE_HTTP: 1,
     allowInsecureHTTP: 1
   };
-  console.log(`dashboard url: ${URL_SERVER}`);
 
   if (DASH_USER_EMAIL && DASH_USER_PASSWORD)
     dashboardConfig.users = [{
