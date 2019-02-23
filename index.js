@@ -5,38 +5,39 @@ const Parse = require('parse/node');
 
 
 const packageJSON = require('./package.json');
-
 const config = require('./config.json');
 
-let parseConfig = config.parseConfig;
+const parseConfig = config.parseConfig;
 
 const PORT        = process.env.PORT          || parseConfig.port;
-const URL_SERVER  = process.env.SERVER_URL    || parseConfig.URLserver;
+const URL_SERVER  = process.env.SERVER_URL    || parseConfig.serverURL;
 const URL_DB      = process.env.DATABASE_URI  ||
-                    process.env.MONGODB_URI   || parseConfig.URLdb;
-const URL_SITE    = process.env.SITE_URL      || parseConfig.URLsite;
+                    process.env.MONGODB_URI   || parseConfig.databaseURI;
 const APP_ID      = process.env.APP_ID        || parseConfig.appId;
 const MASTER_KEY  = process.env.MASTER_KEY    || parseConfig.masterKey;
 
-const DASHBOARD_ACTIVATED = process.env.DASHBOARD_ACTIVATED || config.extraConfig.dashboardActivated;
-const DASH_USER_EMAIL     = process.env.USER_EMAIL          || config.extraConfig.userEmail;
-const DASH_USER_PASSWORD  = process.env.USER_PASS           || config.extraConfig.userPassword;
+const DASHBOARD_ACTIVATED = process.env.DASHBOARD_ACTIVATED || (config.dashboardConfig ? config.dashboardConfig.dashboardActivated : false);
+const DASH_USER_EMAIL     = process.env.USER_EMAIL          || (config.dashboardConfig ? config.dashboardConfig.userEmail : '');
+const DASH_USER_PASSWORD  = process.env.USER_PASS           || (config.dashboardConfig ? config.dashboardConfig.userPassword : '');
 
+const URL_SITE    = process.env.SITE_URL      || config.siteURL;
 
-let emailOptions = parseConfig.emailAdapter.options;
-emailOptions.fromAddress  = process.env.FROM_ADDRESS    || emailOptions.fromAddress;
-emailOptions.domain       = process.env.MAILGUN_DOMAIN  || emailOptions.domain;
-emailOptions.apiKey       = process.env.MAILGUN_API_KEY || emailOptions.apiKey;
+const emailOptions = parseConfig.emailAdapter ?  parseConfig.emailAdapter.options : null;
+if (emailOptions) {
+  emailOptions.fromAddress  = process.env.FROM_ADDRESS    || emailOptions.fromAddress;
+  emailOptions.domain       = process.env.MAILGUN_DOMAIN  || emailOptions.domain;
+  emailOptions.apiKey       = process.env.MAILGUN_API_KEY || emailOptions.apiKey;
+}
 
 
 Object.assign(parseConfig, {
   appId: APP_ID,
   masterKey: MASTER_KEY,
-  cloud: "./cloud/main",
   databaseURI: URL_DB,
-  
   serverURL: URL_SERVER,
-  publicServerURL: URL_SERVER
+  publicServerURL: URL_SERVER,
+
+  cloud: "./cloud/main"
 });
 
 const cps = parseConfig.customPages;

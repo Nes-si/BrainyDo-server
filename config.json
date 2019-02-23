@@ -5,9 +5,8 @@
     "masterKey": "SampleMasterKey",
 
     "port": 1117,
-    "URLserver": "http://localhost:1117/parse",
-    "URLdb": "mongodb://localhost:27017/TripleL",
-    "URLsite": "http://localhost:11000",
+    "serverURL": "http://localhost:1117/parse",
+    "databaseURI": "mongodb://heroku_8tgqxcvx:agl5kr77m6shfgfdsc2qaiird2@ds231559.mlab.com:31559/heroku_8tgqxcvx",
 
     "maxUploadSize": "10mb",
 
@@ -49,9 +48,9 @@
     }
   },
 
-  "extraConfig": {
-    "dashboardActivated": true,
-    "userEmail": "test",
-    "userPassword": "test"
-  }
+  "dashboardConfig": {
+    "dashboardActivated": true
+  },
+
+  "siteURL": "http://localhost:11000"
 }
