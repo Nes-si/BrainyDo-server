@@ -118,19 +118,6 @@ Parse.Cloud.beforeSave(Parse.User, request => {
 });
 
 
-Parse.Cloud.define('checkCity', async request => {
-  let forwardedFor = request.headers['x-forwarded-for'];
-  if (!forwardedFor)
-    return null;
-
-  console.log(forwardedFor);
-  if (forwardedFor.indexOf(',') > -1)
-    return forwardedFor.split(',')[0];
-  else
-    return forwardedFor;
-});
-
-
 Parse.Cloud.define('joinEvent', async request => {
   const {user} = request;
   if (!user)
