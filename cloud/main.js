@@ -132,53 +132,49 @@ const deleteFile = async (file) => {
 };
 
 
+const convertImg = async (imageFileOld, resizeOpts) => {
+  if (!resizeOpts)
+    resizeOpts = {
+      width: 1000,
+      height: 1000,
+      fit: 'inside',
+      withoutEnlargement: true
+    };
+
+  const response = await Parse.Cloud.httpRequest({url: imageFileOld.url()});
+
+  const imageBuffer = await sharp(response.buffer)
+    .resize(resizeOpts)
+    .jpeg({
+      quality: 90,
+      chromaSubsampling: '4:4:4'
+    })
+    .toBuffer();
+
+  const imageData = Array.from(Buffer.from(imageBuffer, 'binary'));
+  const imageFile = new Parse.File('image', imageData, 'image/jpeg');
+  await imageFile.save();
+  return imageFile;
+};
+
+
 Parse.Cloud.beforeSave(Parse.User, async request => {
-  const newUser = request.object;
-  const email = newUser.get('email');
-  if (newUser.get('username') != email)
-    newUser.set('username', email);
+  const userNew = request.object;
+  const email = userNew.get('email');
+  if (userNew.get('username') != email)
+    userNew.set('username', email);
 
   const {user} = request;
 
   const imgOld = user.get('image');
-  const imgNew = newUser.get('image');
+  const imgNew = userNew.get('image');
 
-  if ((!imgOld && imgNew) || (imgOld && imgNew && imgOld.name() != imgNew.name())) {
-    const response = await Parse.Cloud.httpRequest({url: imgNew.url()});
+  if (imgNew && (!imgOld || imgOld.name() != imgNew.name())) {
+    let imageFile = await convertImg(imgNew);
+    userNew.set('image', imageFile);
 
-    let imageBuffer = await sharp(response.buffer)
-      .resize({
-        width: 1000,
-        height: 1000,
-        fit: 'inside',
-        withoutEnlargement: true
-      })
-      .jpeg({
-        quality: 90,
-        chromaSubsampling: '4:4:4'
-      })
-      .toBuffer();
-
-    let imageData = Array.from(Buffer.from(imageBuffer, 'binary'));
-    let imageFile = new Parse.File('image', imageData, 'image/jpeg');
-    await imageFile.save();
-
-    newUser.set('image', imageFile);
-
-
-    imageBuffer = await sharp(response.buffer)
-      .resize({width: 40, height: 40})
-      .jpeg({
-        quality: 90,
-        chromaSubsampling: '4:4:4'
-      })
-      .toBuffer();
-
-    imageData = Array.from(Buffer.from(imageBuffer, 'binary'));
-    imageFile = new Parse.File('imageMini', imageData, 'image/jpeg');
-    await imageFile.save();
-
-    newUser.set('imageMini', imageFile);
+    imageFile = await convertImg(imgNew, {width: 40, height: 40});
+    userNew.set('imageMini', imageFile);
 
     try {
       await deleteFile(imgNew);
@@ -200,26 +196,8 @@ Parse.Cloud.beforeSave(`Event`, async request => {
     imgOld = eventOld.get('image');
   }
 
-  if ((!imgOld && imgNew) || (imgOld && imgNew && imgOld.name() != imgNew.name())) {
-    const response = await Parse.Cloud.httpRequest({url: imgNew.url()});
-
-    let imageBuffer = await sharp(response.buffer)
-      .resize({
-        width: 1000,
-        height: 1000,
-        fit: 'inside',
-        withoutEnlargement: true
-      })
-      .jpeg({
-        quality: 90,
-        chromaSubsampling: '4:4:4'
-      })
-      .toBuffer();
-
-    let imageData = Array.from(Buffer.from(imageBuffer, 'binary'));
-    let imageFile = new Parse.File('image', imageData, 'image/jpeg');
-    await imageFile.save();
-
+  if (imgNew && (!imgOld || imgOld.name() != imgNew.name())) {
+    let imageFile = await convertImg(imgNew);
     eventNew.set('image', imageFile);
 
     try {
