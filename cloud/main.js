@@ -1,6 +1,8 @@
 console.log('Cloud code connected');
 
 
+const sharp = require('sharp');
+
 const configs = require('../index.js');
 const config = configs.parseConfig;
 const SITE = configs['URL_SITE'];
@@ -110,11 +112,85 @@ const deleteTable = async (table) => {
 };
 
 
-Parse.Cloud.beforeSave(Parse.User, request => {
-  const user = request.object;
-  const email = user.get('email');
-  if (user.get('username') != email)
-    user.set('username', email);
+const deleteFile = async (file) => {
+  const url = config.serverURL + '/files/' + file.name();
+
+  const response = await Parse.Cloud.httpRequest({
+    url,
+    method: 'DELETE',
+    mode: 'cors',
+    cache: 'no-cache',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Parse-Application-Id': config.appId,
+      'X-Parse-Master-Key': config.masterKey
+    }
+  });
+
+  if (response.status != 200)
+    throw response.status;
+};
+
+
+Parse.Cloud.beforeSave(Parse.User, async request => {
+  const newUser = request.object;
+  const email = newUser.get('email');
+  if (newUser.get('username') != email)
+    newUser.set('username', email);
+
+  const {user} = request;
+
+  const imgOld = user.get('image');
+  const imgNew = newUser.get('image');
+
+  if ((!imgOld && imgNew) || (imgOld && imgNew && imgOld.name() != imgNew.name())) {
+    const response = await Parse.Cloud.httpRequest({url: imgNew.url()});
+
+    let imageBuffer = await sharp(response.buffer)
+      .resize({
+        width: 1000,
+        height: 1000,
+        fit: 'inside',
+        withoutEnlargement: true
+      })
+      .jpeg({
+        quality: 90,
+        chromaSubsampling: '4:4:4'
+      })
+      .toBuffer();
+
+    let imageData = Array.from(Buffer.from(imageBuffer, 'binary'));
+    let imageFile = new Parse.File('image', imageData, 'image/jpeg');
+    await imageFile.save();
+
+    newUser.set('image', imageFile);
+
+
+    imageBuffer = await sharp(response.buffer)
+      .resize({width: 40, height: 40})
+      .jpeg({
+        quality: 90,
+        chromaSubsampling: '4:4:4'
+      })
+      .toBuffer();
+
+    imageData = Array.from(Buffer.from(imageBuffer, 'binary'));
+    imageFile = new Parse.File('imageMini', imageData, 'image/jpeg');
+    await imageFile.save();
+
+    newUser.set('imageMini', imageFile);
+
+    try {
+      await deleteFile(imgNew);
+      if (imgOld)
+        await deleteFile(imgOld);
+    } catch (e) {}
+  }
+});
+
+
+Parse.Cloud.beforeSave(`Event`, async request => {
+
 });
 
 

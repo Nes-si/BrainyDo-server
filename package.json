@@ -23,6 +23,7 @@
     "parse-server": "^3.0.0",
     "parse-server-mailgun": "^2.4.13",
     "request": "^2.88.0",
+    "sharp": "^0.21.3",
     "stripe": "^6.19.0"
   },
   "engines": {
