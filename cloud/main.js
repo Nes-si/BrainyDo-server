@@ -190,7 +190,44 @@ Parse.Cloud.beforeSave(Parse.User, async request => {
 
 
 Parse.Cloud.beforeSave(`Event`, async request => {
+  const eventNew = request.object;
+  const imgNew = eventNew.get('image');
 
+  let imgOld;
+  if (eventNew.id) {
+    const eventOld = await new Parse.Query('Event')
+      .get(eventNew.id);
+    imgOld = eventOld.get('image');
+  }
+
+  if ((!imgOld && imgNew) || (imgOld && imgNew && imgOld.name() != imgNew.name())) {
+    const response = await Parse.Cloud.httpRequest({url: imgNew.url()});
+
+    let imageBuffer = await sharp(response.buffer)
+      .resize({
+        width: 1000,
+        height: 1000,
+        fit: 'inside',
+        withoutEnlargement: true
+      })
+      .jpeg({
+        quality: 90,
+        chromaSubsampling: '4:4:4'
+      })
+      .toBuffer();
+
+    let imageData = Array.from(Buffer.from(imageBuffer, 'binary'));
+    let imageFile = new Parse.File('image', imageData, 'image/jpeg');
+    await imageFile.save();
+
+    eventNew.set('image', imageFile);
+
+    try {
+      await deleteFile(imgNew);
+      if (imgOld)
+        await deleteFile(imgOld);
+    } catch (e) {}
+  }
 });
 
 
