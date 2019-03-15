@@ -110,26 +110,6 @@ const deleteTable = async (table) => {
 };
 
 
-const deleteTable = async (table) => {
-  const endpoint = '/schemas/' + table;
-
-  const response = await Parse.Cloud.httpRequest({
-    url: config.serverURL + endpoint,
-    method: 'DELETE',
-    mode: 'cors',
-    cache: 'no-cache',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Parse-Application-Id': config.appId,
-      'X-Parse-Master-Key': config.masterKey
-    }
-  });
-
-  if (response.status != 200)
-    throw response.status;
-};
-
-
 Parse.Cloud.beforeSave(Parse.User, request => {
   const user = request.object;
   const email = user.get('email');
