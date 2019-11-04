@@ -1,18 +1,18 @@
 {
-  "name": "triplel-server",
+  "name": "brainy_do-server",
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://Nes-si@github.com/Nes-si/TripleL-server.git"
+    "url": "git+https://Nes-si@github.com/Nes-si/BrainyDo-server.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Nes-si/TripleL-server/issues"
+    "url": "https://github.com/Nes-si/BrainyDo-server/issues"
   },
-  "homepage": "https://github.com/Nes-si/TripleL-server#readme",
+  "homepage": "https://github.com/Nes-si/BrainyDo-server#readme",
   "scripts": {
     "start": "node index.js"
   },

@@ -1,7 +1,7 @@
 {
   "parseConfig": {
-    "appName": "TripleL",
-    "appId": "TripleLId",
+    "appName": "BrainyDo",
+    "appId": "BrainyDoId",
     "masterKey": "SampleMasterKey",
 
     "port": 1117,
@@ -31,7 +31,7 @@
             "pathHtml": "mailTemplates/emailVerify.html"
           },
           "inviteEmail": {
-            "subject": "Inviting you to Chisel",
+            "subject": "Inviting you to BrainyDo",
             "pathPlainText": "mailTemplates/invite.txt",
             "pathHtml": "mailTemplates/invite.html"
           }
