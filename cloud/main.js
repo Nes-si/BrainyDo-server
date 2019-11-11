@@ -165,6 +165,8 @@ Parse.Cloud.beforeSave(Parse.User, async request => {
     userNew.set('username', email);
 
   const {user} = request;
+  if (!user)
+    return;
 
   const imgOld = user.get('image');
   const imgNew = userNew.get('image');
