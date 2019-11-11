@@ -16,8 +16,8 @@
     "emailAdapter": {
       "module": "parse-server-mailgun",
       "options": {
-        "fromAddress": "sample@address.com",
-        "domain": "sampledomain.com",
+        "fromAddress": "sample@brainydo.com",
+        "domain": "brainydo.com",
         "apiKey": "samplekey",
         "templates": {
           "passwordResetEmail": {

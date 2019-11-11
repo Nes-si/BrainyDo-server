@@ -86,5 +86,5 @@ const postStart = async () => {
 
 app.listen(PORT, async () => {
   await postStart();
-  console.log(`Chisel Parse server v${packageJSON.version} running on port ${PORT}.`);
+  console.log(`BrainyDo Parse server v${packageJSON.version} running on port ${PORT}.`);
 });

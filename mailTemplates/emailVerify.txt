@@ -1,9 +1,9 @@
 Hi {{username}},
 
-Thanks for signing up for Chisel!
+Thanks for signing up for BrainyDo!
 Please confirm your account by clicking on the link below.
 
 {{link}}
 
-The Chisel Team
-https://chiselcms.com
+The BrainyDo Team
+https://brainydo.com
