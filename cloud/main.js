@@ -198,7 +198,7 @@ Parse.Cloud.beforeSave(`Event`, async request => {
     imgOld = eventOld.get('image');
   }
 
-  if (imgNew && (!imgOld || imgOld.name() != imgNew.name())) {
+  if (imgNew && (!imgOld || (imgOld.name && imgNew.name && imgOld.name() != imgNew.name() ))) {
     let imageFile = await convertImg(imgNew);
     eventNew.set('image', imageFile);
 
