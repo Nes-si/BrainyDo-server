@@ -18,12 +18,12 @@
   },
   "dependencies": {
     "express": "^4.17.1",
-    "parse": "^2.8.0",
+    "parse": "^2.9.1",
     "parse-dashboard": "^2.0.5",
     "parse-server": "^3.9.0",
     "parse-server-mailgun": "^2.4.15",
     "request": "^2.88.0",
-    "sharp": "^0.23.2"
+    "sharp": "^0.23.3"
   },
   "engines": {
     "node": ">=10.0.0",
